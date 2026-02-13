@@ -7,3 +7,10 @@ asgiref==3.7.2
 Django==5.0.13
 sqlparse==0.4.4
 typing_extensions==4.9.0
+
+# REST API
+djangorestframework==3.16.1
+django-cors-headers==4.9.0
+
+# HTTP
+requests==2.32.5

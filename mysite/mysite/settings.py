@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +21,32 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^=6-_k)oh!n9-fpcd1qd0rf(!8y2!!8cc*so1if(!*ydv@*_dc'
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-^=6-_k)oh!n9-fpcd1qd0rf(!8y2!!8cc*so1if(!*ydv@*_dc'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+
+# ===== 키움 API 설정 =====
+# 모의투자/실투자 전환: KIWOOM_TRADE_MODE = 'mock' 또는 'real'
+KIWOOM_TRADE_MODE = os.environ.get('KIWOOM_TRADE_MODE', 'mock')
+
+# 키움 API 키 설정
+KIWOOM_APP_KEY_MOCK = os.environ.get('KIWOOM_APP_KEY_MOCK', '')
+KIWOOM_APP_SECRET_MOCK = os.environ.get('KIWOOM_APP_SECRET_MOCK', '')
+KIWOOM_APP_KEY_REAL = os.environ.get('KIWOOM_APP_KEY_REAL', '')
+KIWOOM_APP_SECRET_REAL = os.environ.get('KIWOOM_APP_SECRET_REAL', '')
+
+# 키움 계좌번호
+KIWOOM_ACCOUNT_NO = os.environ.get('KIWOOM_ACCOUNT_NO', '')
+
+# Windows 브릿지 에이전트 URL
+KIWOOM_BRIDGE_URL = os.environ.get('KIWOOM_BRIDGE_URL', 'http://localhost:5000')
 
 
 # Application definition
@@ -37,10 +58,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
+    'stock',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -48,6 +73,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'mysite.urls'
 
@@ -103,9 +130,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
